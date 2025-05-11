@@ -1,0 +1,123 @@
+{#{% load static %}#}
+{#<html lang="en">#}
+{#<head>#}
+{#  <title>{{ title }}</title>#}
+{#  <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}"">#}
+{##}
+{#</head>#}
+{#<body>#}
+{#  #}
+{#  <div style="margin-top: -50px;" class="text-center font-weight-bold h1">#}
+{#  {{ title }} Result#}
+{#  </div>#}
+{#  <table id="example1" class="">#}
+{#{% for key, value in positions.items  %} {# Loop 1 #}
+{#<table id="example1" class="text-center table table-bordered">#}
+{#<tr>#}
+{#  <th style="background-color: aqua;" class="text-center" colspan="3">{{ key }} | Maximum Number Of Winners : {{ value.max_vote }}</th>#}
+{#  </tr>#}
+{#  <tr>#}
+{#  <th class="text-center" style="width: 5%;">SN</th>#}
+{#  <th class="text-center" style="width: 60%;">Candidate Name </th>#}
+{#  <th class="text-center" style="width: 35%;">Total Votes Recorded</th>#}
+{#</tr>#}
+{#{% for data  in value.candidate_data %} {# Loop 2 #}
+{#  <tr>#}
+{#    <td>{{ forloop.counter }}</td>#}
+{#    <td>{{ data.name }}</td>#}
+{#    <td>{{ data.votes }}</td>#}
+{#  </tr>#}
+{#  {% empty %}#}
+{#  <tr>#}
+{#    <td colspan="3">No Candidates Vying For This Position</td>#}
+{#  </tr>#}
+{#{% endfor %} {# Please Close Loop 2  #}
+{##}
+{#<tr>#}
+{#  <th class="text-center" colspan="3"> {{ value.winner|safe }} </th>#}
+{#  </tr>#}
+{#  </table>#}
+{#{% endfor %} {# Please Close Loop 1  #}
+{##}
+{#</tbody>#}
+{#  </table>#}
+{##}
+{#</body>#}
+{#</html>#}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }} - Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #e0f7fa;
+        }
+        .winner-row th {
+            background-color: #dcedc8;
+            font-weight: bold;
+        }
+        .position-title {
+            background-color: #b3e5fc;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>{{ title }} Results</h1>
+
+{% for key, value in positions.items %}
+    <table>
+        <tr>
+            <th colspan="3" class="position-title">
+                {{ key }} | Maximum Number of Winners: {{ value.max_vote }}
+            </th>
+        </tr>
+        <tr>
+            <th>SN</th>
+            <th>Candidate Name</th>
+            <th>Total Votes Recorded</th>
+        </tr>
+
+        {% for data in value.candidate_data %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ data.name }}</td>
+            <td>{{ data.votes }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No Candidates Vying For This Position</td>
+        </tr>
+        {% endfor %}
+
+        <tr class="winner-row">
+            <th colspan="3">{{ value.winner|safe }}</th>
+        </tr>
+    </table>
+{% endfor %}
+
+</body>
+</html>
